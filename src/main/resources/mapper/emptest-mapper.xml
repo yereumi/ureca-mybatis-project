@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="EmpTestMapper">
+	<select id="empSelectAll" resultType="kr.co.ureca.mybatis.dto.EmpDto">
+		SELECT empno, ename, job, mgr, hiredate, sal, comm, deptno
+		FROM emp
+		ORDER BY ename
+	</select>
+
+	<select id="empSelectByEname" parameterType="java.lang.String" resultType="kr.co.ureca.mybatis.dto.EmpDto">
+		SELECT empno, ename, job, mgr, hiredate, sal, comm, deptno
+		FROM emp
+		WHERE ename = #{ename}
+	</select>
+</mapper>
