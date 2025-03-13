@@ -1,11 +1,16 @@
 package kr.co.ureca.mybatis.controller;
 
-import kr.co.ureca.mybatis.dto.EmpDto;
+import java.util.ArrayList;
+import java.util.List;
+
+import kr.co.ureca.mybatis.dto.EmpDTO;
+import kr.co.ureca.mybatis.dto.EmpSearchDTO;
 import kr.co.ureca.mybatis.service.EmpTestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
 
 @Controller
 public class EmpTestController {
@@ -15,29 +20,79 @@ public class EmpTestController {
 
     @RequestMapping(value = "/empAll", method = RequestMethod.GET)
     public String empSelectAll() {
-        System.out.println(empTestService.empSelectAll());
+        List<EmpDTO> list = empTestService.empSelectAll();
+        System.out.println( list );
         return "hello";
     }
 
-    @RequestMapping(value = "/empByEname", method = RequestMethod.GET)
+    @RequestMapping(value = "/empByName", method = RequestMethod.GET)
     public String empSelectByEname() {
-        EmpDto dto = empTestService.empSelectByEname("ADAMS");
-        System.out.println(dto);
+        EmpDTO dto = empTestService.empSelectByEname("ADAMS");
+        System.out.println( dto );
         return "hello";
     }
 
-    @RequestMapping(value = "/empIns", method = RequestMethod.POST)
-    public void empInsert() {
-
+    @RequestMapping(value = "/empIns", method = RequestMethod.GET)
+    public String empInsert() {
+        EmpDTO dto = new EmpDTO(null, "YOUNG", "CLERK", null, null, "1000", "200", "40");
+        int successCnt = empTestService.empInsert(dto);
+        System.out.println("empInsert-controller-successCnt : " + successCnt);
+        System.out.println("empInsert-controller-selectKey : " + dto.getEmpno());
+        return "hello";
     }
 
-    @RequestMapping(value = "/empUpd", method = RequestMethod.POST)
-    public void empUpdate() {
-
+    @RequestMapping(value = "/empInsList", method = RequestMethod.GET)
+    public String empInsertList() {
+        EmpDTO dto1 = new EmpDTO(null, "YAN", "CLERK", null, null, "1000", "200", "40");
+        EmpDTO dto2 = new EmpDTO(null, "YUL", "CLERK", null, null, "1000", "200", "40");
+        EmpDTO dto3 = new EmpDTO(null, "YOL", "CLERK", null, null, "1000", "200", "40");
+        ArrayList<EmpDTO> insList = new ArrayList<>();
+        insList.add(dto1);	insList.add(dto2);	insList.add(dto3);
+        int successCnt = empTestService.empInsertList(insList);
+        System.out.println("empInsertList-controller-successCnt : " + successCnt);
+        return "hello";
     }
 
-    @RequestMapping(value = "/empDel", method = RequestMethod.GET)
-    public void empDelete() {
-
+    @RequestMapping(value = "/empUp", method = RequestMethod.GET)
+    public String empUpdate() {
+        EmpDTO dto = new EmpDTO("7935", "YULLIAN", "ANALYST", null, null, "2000", null, null);
+        int successCnt = empTestService.empUpdate(dto);
+        System.out.println("empUpdate-controller-successCnt : " + successCnt);
+        return "hello";
     }
+
+    @RequestMapping(value = "/selectIn", method = RequestMethod.GET)
+    public String selectIn() {
+        ArrayList<String> enameList = new ArrayList<>();
+        enameList.add("MILLER");enameList.add("ADAMS");enameList.add("JAMES");
+
+        List<EmpDTO> list = empTestService.selectIn(enameList);
+        System.out.println("selectIn-controller : " + list);
+
+        return "hello";
+    }
+
+    @RequestMapping(value = "/selectSearch", method = RequestMethod.GET)
+    public String selectSearch() {
+        EmpSearchDTO dto1 = new EmpSearchDTO("SMITH", null, null);
+        List<EmpDTO> list1 = empTestService.selectSearch(dto1);
+        System.out.println("selectSearch-controller-list1 : " + list1);
+
+        EmpSearchDTO dto2 = new EmpSearchDTO(null, "MANAGER", null);
+        List<EmpDTO> list2 = empTestService.selectSearch(dto2);
+        System.out.println("selectSearch-controller-list2 : " + list2);
+
+        EmpSearchDTO dto3 = new EmpSearchDTO(null, null, "10");
+        List<EmpDTO> list3 = empTestService.selectSearch(dto3);
+        System.out.println("selectSearch-controller-list3 : " + list3);
+
+        return "hello";
+    }
+
 }
+
+
+
+
+
+

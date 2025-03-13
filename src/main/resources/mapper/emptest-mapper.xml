@@ -1,17 +1,84 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="EmpTestMapper">
-	<select id="empSelectAll" resultType="kr.co.ureca.mybatis.dto.EmpDto">
+
+	<select id="selectSearch" parameterType="kr.co.ureca.dto.EmpSearchDTO" resultType="kr.co.ureca.dto.EmpDTO">
+		select empno, ename, job, mgr, hiredate, sal, comm, deptno
+		from emp where 1=1
+		<if test="ename != null and ename != ''">
+			and ename = #{ename}
+		</if>
+		<if test="job != null and job != ''">
+			and job = #{job}
+		</if>
+		<if test="deptno != null and deptno != ''">
+			and deptno = #{deptno}
+		</if>
+	</select>
+
+	<select id="selectIn" parameterType="java.util.ArrayList" resultType="kr.co.ureca.dto.EmpDTO">
+		select empno, ename, job, mgr, hiredate, sal, comm, deptno
+		from emp where ename in
+		<foreach collection="list" item="strEname" open="(" separator="," close=")">
+			#{strEname}
+		</foreach>
+	</select>
+
+	<update id="empUpdate" parameterType="kr.co.ureca.dto.EmpDTO">
+		update emp
+		set empno = #{empno}
+		<if test="ename != null and ename != ''">
+			, ename = #{ename}
+		</if>
+		<if test="job != null and job != ''">
+			, job = #{job}
+		</if>
+		<if test="mgr != null and mgr != ''">
+			, mgr = #{mgr}
+		</if>
+		<if test="hiredate != null and hiredate != ''">
+			, hiredate = #{hiredate}
+		</if>
+		<if test="sal != null and sal != ''">
+			, sal = #{sal}
+		</if>
+		<if test="comm != null and comm != ''">
+			, comm = #{comm}
+		</if>
+		<if test="deptno != null and deptno != ''">
+			, deptno = #{deptno}
+		</if>
+		where empno = #{empno}
+	</update>
+
+	<insert id="empInsertList" parameterType="java.util.ArrayList">
+		INSERT INTO emp (ename, job, mgr, hiredate, sal, comm, deptno) VALUES
+		<foreach collection="list" item="dto" separator=",">
+			( #{dto.ename}, #{dto.job}, #{dto.mgr}, now(), #{dto.sal}, #{dto.comm}, #{dto.deptno} )
+		</foreach>
+	</insert>
+
+	<insert id="empInsert" parameterType="kr.co.ureca.dto.EmpDTO">
+		INSERT INTO emp (ename, job, mgr, hiredate, sal, comm, deptno)
+		VALUES ( #{ename}, #{job}, #{mgr}, now(), #{sal}, #{comm}, #{deptno} )
+		<selectKey keyProperty="empno" resultType="java.lang.String" order="AFTER">
+			select @@identity
+		</selectKey>
+	</insert>
+
+	<select id="empSelectByEname" parameterType="java.lang.String" resultType="kr.co.ureca.dto.EmpDTO">
+		SELECT empno, ename, job, mgr, hiredate, sal, comm, deptno
+		FROM emp
+		WHERE ename = #{ename}
+	</select>
+
+	<select id="empSelectAll" resultType="kr.co.ureca.dto.EmpDTO" >
 		SELECT empno, ename, job, mgr, hiredate, sal, comm, deptno
 		FROM emp
 		ORDER BY ename
 	</select>
 
-	<select id="empSelectByEname" parameterType="java.lang.String" resultType="kr.co.ureca.mybatis.dto.EmpDto">
-		SELECT empno, ename, job, mgr, hiredate, sal, comm, deptno
-		FROM emp
-		WHERE ename = #{ename}
-	</select>
 </mapper>
