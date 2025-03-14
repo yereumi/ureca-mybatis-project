@@ -23,23 +23,24 @@ public class EmpTestController {
         List<EmpDTO> list = empTestService.empSelectAll();
         System.out.println( list );
         return "hello";
-    }
+    } // empSelectAll
 
     @RequestMapping(value = "/empByName", method = RequestMethod.GET)
     public String empSelectByEname() {
         EmpDTO dto = empTestService.empSelectByEname("ADAMS");
         System.out.println( dto );
         return "hello";
-    }
+    } // empSelectByEname
 
     @RequestMapping(value = "/empIns", method = RequestMethod.GET)
+//	@RequestMapping(value = "/empIns", method = RequestMethod.POST)
     public String empInsert() {
-        EmpDTO dto = new EmpDTO(null, "YOUNG", "CLERK", null, null, "1000", "200", "40");
+        EmpDTO dto = new EmpDTO(null, "JACKSON", "CLERK", null, null, "1000", "200", "40");
         int successCnt = empTestService.empInsert(dto);
         System.out.println("empInsert-controller-successCnt : " + successCnt);
         System.out.println("empInsert-controller-selectKey : " + dto.getEmpno());
         return "hello";
-    }
+    } // empInsert
 
     @RequestMapping(value = "/empInsList", method = RequestMethod.GET)
     public String empInsertList() {
@@ -51,15 +52,16 @@ public class EmpTestController {
         int successCnt = empTestService.empInsertList(insList);
         System.out.println("empInsertList-controller-successCnt : " + successCnt);
         return "hello";
-    }
+    } // empInsertList
 
     @RequestMapping(value = "/empUp", method = RequestMethod.GET)
+//	@RequestMapping(value = "/empUp", method = RequestMethod.POST)
     public String empUpdate() {
-        EmpDTO dto = new EmpDTO("7935", "YULLIAN", "ANALYST", null, null, "2000", null, null);
+        EmpDTO dto = new EmpDTO("7935", "YULLIAN", "MANAGER", null, null, "3000", null, null);
         int successCnt = empTestService.empUpdate(dto);
         System.out.println("empUpdate-controller-successCnt : " + successCnt);
         return "hello";
-    }
+    } // empUpdate
 
     @RequestMapping(value = "/selectIn", method = RequestMethod.GET)
     public String selectIn() {
@@ -70,7 +72,7 @@ public class EmpTestController {
         System.out.println("selectIn-controller : " + list);
 
         return "hello";
-    }
+    } // selectIn
 
     @RequestMapping(value = "/selectSearch", method = RequestMethod.GET)
     public String selectSearch() {
@@ -87,7 +89,7 @@ public class EmpTestController {
         System.out.println("selectSearch-controller-list3 : " + list3);
 
         return "hello";
-    }
+    } // selectSearch
 
 }
 
